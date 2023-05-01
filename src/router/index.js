@@ -1,23 +1,39 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import Toast from "@/components/lib/Toast";
+import LandingRoutes from "./LandingRoutes";
+import UserRoutes from "./UserRoutes";
+// import ExampleRoutes from "./ExampleRoutes";
+
+const routes = [];
+routes.push(
+  // ...ExampleRoutes,
+  // ...UserRoutes,
+  ...LandingRoutes
+);
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView
-    },
-    {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
-  ]
-})
+  history: createWebHistory(),
+  routes,
+});
 
-export default router
+router.beforeEach((to, from, next) => {
+  // middleware login
+  if (
+    to.matched.some((record) => record.meta.requireAuth) &&
+    !localStorage.getItem("siswa_isLogin")
+  ) {
+    // 1.periksa apakah token valid
+    // 2. jikat tidak valid maka remove localstorage
+    // 3. pergi kemenu login
+    Toast.babeng("Info", "Silahkan Login terlebih dahulu!");
+    // console.log("belum login");
+    // next("/login");
+    next({ name: "Login" });
+    // console.log(to);
+    // next({ name: "login", query: { next: to.fullPath } });
+  } else {
+    next();
+  }
+});
+
+export default router;
