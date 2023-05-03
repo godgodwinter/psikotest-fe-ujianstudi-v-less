@@ -125,10 +125,10 @@ const doMulai = async () => {
             // console.log('====================================');
             // console.log(dataFormSend);
             // console.log('====================================');
-            const response = await Api.post(`siswa/ujianstudi/aspek_detail/${aspek_detail_id.value}/mulai`, dataFormSend);
-            // console.log(response);
+            const response = await Api.post(`studiv3/siswa/ujianstudi/vless/paketsoal/${aspek_detail_id.value}/do_mulai`, dataFormSend);
+            console.log(response);
             Toast.success("Info", "Berhasil memulai !");
-            onKlik(tgl_selesai, aspek_detail_id.value, index.value)
+            // onKlik(tgl_selesai, aspek_detail_id.value, index.value)
             setTimeout(fnPending, 2000, false);
 
             // await setTimeout(btnLoading.value = false, 2000, 'argumen example');

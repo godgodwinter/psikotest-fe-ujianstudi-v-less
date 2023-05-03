@@ -59,7 +59,7 @@ const getData = async () => {
     const res = await v3_get_AspekdetailTersedia();
     if (res) {
         data.value = res;
-        console.log(res);
+        // console.log(res);
     }
     loading.value = false
 }
@@ -70,9 +70,9 @@ const v3_get_AspekdetailTersedia = async () => {
         const response = await ApiNode.get(
             `studiv3/siswa/ujianstudi/vless/get_aspekdetail_tersedia`
         );
-        console.log(response.hasOwnProperty("data"));
+        // console.log(response.hasOwnProperty("data"));
         if (response.hasOwnProperty("data")) {
-            console.log(response);
+            // console.log(response);
             return response.data;
         } else {
             return null;

@@ -45,5 +45,5 @@ const toggleSideBar = () => {
         </div>
         <div class="navbar-end space-x-2">
         </div>
-</div>
+    </div>
 </template>

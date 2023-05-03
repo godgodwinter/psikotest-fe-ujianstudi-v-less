@@ -7,6 +7,7 @@ import { useUjianstudiPagesStore } from "../../stores/ujianstudi/ujianstudiPages
 import Toast from "@/components/lib/Toast";
 import moment from "moment/min/moment-with-locales";
 import localization from "moment/locale/id";
+import ApiNode from "@/axios/axiosNode";
 moment.updateLocale("id", localization);
 
 const ujianstudiPagesStore = useUjianstudiPagesStore();
@@ -63,6 +64,32 @@ const goToSoal = (index, soal) => {
 const doResume = () => {
     goToSoal(0, dataMapel_aktif.value.soal[0])
 }
+// periksa ujian aktif = jika ada maka tampilkan timer dan jalankan
+const get_PeriksaUjianAktif = async () => {
+    try {
+        const response = await ApiNode.get(
+            `studiv3/siswa/ujianstudi/vless/periksaUjianAktif`
+        );
+        console.log(response.hasOwnProperty("data"));
+        if (response.hasOwnProperty("data")) {
+            console.log(response);
+            let getTimer = response?.data?.sisa_waktu;
+            onKlik(getTimer)
+            if (getTimer > 0) {
+                console.log(response?.data?.soal);
+                ujianstudiPagesStore.set_siswa_ujianstudi_aktif(response?.data)
+            }
+            return response.data;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        Toast.danger("Error", `Gagal menghubungkan ke Server!`);
+        console.error(error);
+        return false;
+    }
+};
+get_PeriksaUjianAktif()
 </script>
 <template>
     <div class="navbar bg-gradient-to-b from-[#d1f6e1] to-white border-b-2 border-gray-50 fixed z-30 w-full top-0">
