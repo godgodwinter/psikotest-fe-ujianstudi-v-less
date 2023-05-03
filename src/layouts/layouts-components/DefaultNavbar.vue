@@ -72,14 +72,16 @@ const get_PeriksaUjianAktif = async () => {
         );
         console.log(response.hasOwnProperty("data"));
         if (response.hasOwnProperty("data")) {
-            console.log(response);
-            let getTimer = response?.data?.sisa_waktu;
-            onKlik(getTimer)
-            if (getTimer > 0) {
-                console.log(response?.data?.soal);
-                ujianstudiPagesStore.set_siswa_ujianstudi_aktif(response?.data)
+            if (response.data) {
+                // console.log(response);
+                let getTimer = response?.data?.sisa_waktu;
+                onKlik(getTimer)
+                if (getTimer > 0) {
+                    // console.log(response?.data?.soal);
+                    ujianstudiPagesStore.set_siswa_ujianstudi_aktif(response?.data)
+                }
+                return response.data;
             }
-            return response.data;
         } else {
             return null;
         }

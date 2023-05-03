@@ -186,12 +186,12 @@ setTimeout(fn_waktu_default, 2000, false);
             <div class="py-2 space-x-2">
                 <!-- <button class="btn btn-warning btn-sm" @click="exportJson()">Export Data Ujian</button> -->
                 <!-- {{ waktu }} -->
-                <button class="btn btn-error btn-sm" @click="refreshDataUjian()" v-if="interval_reset_timer < 1">Refresh
+                <!-- <button class="btn btn-error btn-sm" @click="refreshDataUjian()" v-if="interval_reset_timer < 1">Refresh
                     Data
                     Ujian</button>
-                <button class="btn btn-dark btn-sm" v-else>Refresh Data Ujian</button>
+                <button class="btn btn-dark btn-sm" v-else>Refresh Data Ujian</button> -->
                 <!-- <p>{{ timerReset }}</p> -->
-                <p>Refresh data ujian aktif dalam : {{ interval_reset_timer }} Detik</p>
+                <!-- <p>Refresh data ujian aktif dalam : {{ interval_reset_timer }} Detik</p> -->
             </div>
             <div class=" overflow-x-auto">
                 <table class="table table-compact w-full">

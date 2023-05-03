@@ -109,20 +109,19 @@ const doStoreData = async (kode_jawaban) => {
     }
     let aspekdetail_index = fn_check_index_mapel_aktif(getMapelAktif.id);
 
+    console.log('====================================');
+    console.log(getMapelAktif.id, ujianstudiPagesStore.get_siswa_ujianstudi_soal_aktif.id);
+    console.log('====================================');
     try {
         let dataFormSend = {
             kode_jawaban,
             aspekdetail_index: aspekdetail_index,
             soal_index: data.value.index,
         }
-        console.log('====================================');
-        console.log("soal_id:", data.value.id, dataFormSend, getMapelAktif);
-        console.log('====================================');
-        const response = await Api.post(`siswa/ujianstudi/aspek_detail/jawab/${data.value.id}`, dataFormSend);
-        // console.log(response);
-        // Toast.success("Info", "Berhasil menyimpan jawaban !");
-        // onKlik(tgl_selesai, aspek_detail_id.value, index.value)
-        // setTimeout(fnPending, defaultPendingLogin, false);
+        // console.log('====================================');
+        // console.log("soal_id:", data.value.id, dataFormSend, getMapelAktif);
+        // console.log('====================================');
+        const response = await Api.post(`studiv3/siswa/ujianstudi/vless/paketsoal/${getMapelAktif.id}/getsoal/${ujianstudiPagesStore.get_siswa_ujianstudi_soal_aktif.id}`, dataFormSend);
         console.log('====================================');
         console.log("berhasil menyimpan jawaban!");
         console.log('====================================');
@@ -133,15 +132,54 @@ const doStoreData = async (kode_jawaban) => {
 
     timerStore.do_run_disabled_button_save()
 
-    // ujianstudiPagesStore.set_siswa_ujianstudi_soal_aktif(getMapelAktif.soal, true);
-    // Toast.babeng("Info", "Jawaban berhasil disimpan")
-    // console.log('====================================22');
-    // console.log(ujianstudiPagesStore.get_siswa_ujianstudi_soal_aktif);
-    // console.log('====================================');
-    // data.value = ujianstudiPagesStore.get_siswa_ujianstudi_soal_aktif
-    // console.log(getMapelAktif);
 
 }
+// const doStoreData = async (kode_jawaban) => {
+//     buttonSaveDisabled.value = 5;
+//     // console.log(kode_jawaban);
+//     let getMapelAktif = ujianstudiPagesStore.get_siswa_ujianstudi_aktif;
+//     // console.log(getMapelAktif, ujianstudiPagesStore.get_siswa_ujianstudi_soal_aktif);
+//     for (const [index_soal, item] of getMapelAktif.soal.entries()) {
+//         if (item.id === ujianstudiPagesStore.get_siswa_ujianstudi_soal_aktif.id) {
+//             getMapelAktif.soal[index_soal].kode_jawaban = kode_jawaban;
+//             ujianstudiPagesStore.set_siswa_ujianstudi_soal_aktif(getMapelAktif.soal[index_soal], index_soal, true);
+//         }
+//     }
+//     let aspekdetail_index = fn_check_index_mapel_aktif(getMapelAktif.id);
+
+//     try {
+//         let dataFormSend = {
+//             kode_jawaban,
+//             aspekdetail_index: aspekdetail_index,
+//             soal_index: data.value.index,
+//         }
+//         console.log('====================================');
+//         console.log("soal_id:", data.value.id, dataFormSend, getMapelAktif);
+//         console.log('====================================');
+//         const response = await Api.post(`siswa/ujianstudi/aspek_detail/jawab/${data.value.id}`, dataFormSend);
+//         // console.log(response);
+//         // Toast.success("Info", "Berhasil menyimpan jawaban !");
+//         // onKlik(tgl_selesai, aspek_detail_id.value, index.value)
+//         // setTimeout(fnPending, defaultPendingLogin, false);
+//         console.log('====================================');
+//         console.log("berhasil menyimpan jawaban!");
+//         console.log('====================================');
+//     } catch (error) {
+//         setTimeout(fnPending, defaultPendingLogin, false);
+//         console.error(error);
+//     }
+
+//     timerStore.do_run_disabled_button_save()
+
+//     // ujianstudiPagesStore.set_siswa_ujianstudi_soal_aktif(getMapelAktif.soal, true);
+//     // Toast.babeng("Info", "Jawaban berhasil disimpan")
+//     // console.log('====================================22');
+//     // console.log(ujianstudiPagesStore.get_siswa_ujianstudi_soal_aktif);
+//     // console.log('====================================');
+//     // data.value = ujianstudiPagesStore.get_siswa_ujianstudi_soal_aktif
+//     // console.log(getMapelAktif);
+
+// }
 
 
 const goToSoal = (index, soal) => {

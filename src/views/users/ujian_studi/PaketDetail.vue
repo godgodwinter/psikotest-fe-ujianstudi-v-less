@@ -74,6 +74,8 @@ const v3_get_Aspekdetail_DetailData = async (aspekdetail_id) => {
     }
 };
 
+
+
 const fn_delay_response = async (args) => {
     data.value = await v3_get_Aspekdetail_DetailData(aspek_detail_id.value)
     //         data.value = data_asli.value.find((item) => item.id == aspek_detail_id.value)
@@ -100,6 +102,7 @@ const fn_check_index_mapel_aktif = (id) => {
 }
 
 const doMulai = async () => {
+    console.log(waktu.value);
     btnLoading.value = true
     if (waktu.value == 0) {
         let tgl_mulai = moment();
@@ -126,6 +129,7 @@ const doMulai = async () => {
             // console.log(dataFormSend);
             // console.log('====================================');
             const response = await Api.post(`studiv3/siswa/ujianstudi/vless/paketsoal/${aspek_detail_id.value}/do_mulai`, dataFormSend);
+            await get_PeriksaUjianAktif();
             console.log(response);
             Toast.success("Info", "Berhasil memulai !");
             // onKlik(tgl_selesai, aspek_detail_id.value, index.value)
@@ -144,12 +148,44 @@ const doMulai = async () => {
     }
 }
 
-const onKlik = async (tgl_selesai, aspek_detail_id, index) => {
-    await timerStore.doJalankanTimerV2_tgl_selesai(tgl_selesai, aspek_detail_id, index);
-    await timerStore.doPeriksaUjianAktif();
-
-    // goToSoal(0, dataMapel_aktif.value.soal[0])
+const get_PeriksaUjianAktif = async () => {
+    try {
+        const response = await ApiNode.get(
+            `studiv3/siswa/ujianstudi/vless/periksaUjianAktif`
+        );
+        console.log(response.hasOwnProperty("data"));
+        if (response.hasOwnProperty("data")) {
+            if (response.data) {
+                // console.log(response);
+                data.value.tgl_mulai = response?.data?.tgl_mulai;
+                let getTimer = response?.data?.sisa_waktu;
+                onKlik(getTimer)
+                if (getTimer > 0) {
+                    console.log(response?.data?.soal);
+                    ujianstudiPagesStore.set_siswa_ujianstudi_aktif(response?.data)
+                }
+                return response.data;
+            }
+        } else {
+            return null;
+        }
+    } catch (error) {
+        Toast.danger("Error", `Gagal menghubungkan ke Server!`);
+        console.error(error);
+        return false;
+    }
 };
+
+
+const onKlik = (time) => {
+    timerStore.doJalankanTimer(time);
+};
+// const onKlik = async (tgl_selesai, aspek_detail_id, index) => {
+//     await timerStore.doJalankanTimerV2_tgl_selesai(tgl_selesai, aspek_detail_id, index);
+//     await timerStore.doPeriksaUjianAktif();
+
+//     // goToSoal(0, dataMapel_aktif.value.soal[0])
+// };
 const goToMulai = async () => {
     // await timerStore.doJalankanTimerV2_tgl_selesai(tgl_selesai, aspek_detail_id, index);
     // await timerStore.doPeriksaUjianAktif();
