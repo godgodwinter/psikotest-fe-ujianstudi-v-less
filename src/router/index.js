@@ -7,7 +7,7 @@ import UserRoutes from "./UserRoutes";
 const routes = [];
 routes.push(
   // ...ExampleRoutes,
-  // ...UserRoutes,
+  ...UserRoutes,
   ...LandingRoutes
 );
 

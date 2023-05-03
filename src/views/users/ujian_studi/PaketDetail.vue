@@ -8,6 +8,7 @@ import moment from "moment/min/moment-with-locales";
 import localization from "moment/locale/id";
 import { defaultPendingLogin } from "@/components/lib/babengHelper";
 import Api from "@/axios/axiosNode";
+import ApiNode from "@/axios/axiosNode";
 
 const LoadingNavbar = defineAsyncComponent(() =>
     import('@/components/alert/AlertLoading.vue')
@@ -44,18 +45,38 @@ ujianstudiPagesStore.$subscribe(
     { detached: false }
 ); //jika detached true :terpisah meskipun komponent di unmount subcrib tetap dijalankan [bug jika halaman di buka 2x akan dieksekusi 2x]
 
-const getData = () => {
-    try {
-        data.value = data_asli.value.find((item) => item.id == aspek_detail_id.value)
-        // console.log(data_asli.value, aspek_detail_id.value, data.value);
-        return true;
-    } catch (error) {
-        console.error(error);
-    }
-}
+// const getData = () => {
+//     try {
+//         data.value = data_asli.value.find((item) => item.id == aspek_detail_id.value)
+//         // console.log(data_asli.value, aspek_detail_id.value, data.value);
+//         return true;
+//     } catch (error) {
+//         console.error(error);
+//     }
+// }
 
-const fn_delay_response = (args) => {
-    getData()
+const v3_get_Aspekdetail_DetailData = async (aspekdetail_id) => {
+    try {
+        const response = await ApiNode.get(
+            `studiv3/siswa/ujianstudi/vless/aspekdetail/${aspekdetail_id}/detail`
+        );
+        console.log(response.hasOwnProperty("data"));
+        if (response.hasOwnProperty("data")) {
+            console.log(response);
+            return response.data;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        Toast.danger("Error", `Gagal menghubungkan ke Server!`);
+        console.error(error);
+        return false;
+    }
+};
+
+const fn_delay_response = async (args) => {
+    data.value = await v3_get_Aspekdetail_DetailData(aspek_detail_id.value)
+    //         data.value = data_asli.value.find((item) => item.id == aspek_detail_id.value)
 }
 
 setTimeout(fn_delay_response, 2000, 'argumen example');
@@ -154,7 +175,7 @@ setTimeout(fnPending, defaultPendingLogin, false);
                         <!-- {{ waktu }} -->
                         <h2>{{ data.aspek_detail_nama }}</h2>
                         <h4>Durasi : {{ data.waktu }} menit</h4>
-                        <h4>Jumlah Soal : {{ data.soal.length }} Soal</h4>
+                        <h4>Jumlah Soal : {{ data.soal_jml }} Soal</h4>
                     </article>
                 </div>
             </div>

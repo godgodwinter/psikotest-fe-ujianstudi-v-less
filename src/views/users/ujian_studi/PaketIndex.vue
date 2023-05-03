@@ -8,12 +8,13 @@ import Toast from "@/components/lib/Toast";
 import API from "@/services/siswaAuthServices";
 import moment from "moment/min/moment-with-locales";
 import localization from "moment/locale/id";
+import ApiNode from "@/axios/axiosNode";
 moment.updateLocale("id", localization);
 const router = useRouter()
 const ujianstudiPagesStore = useUjianstudiPagesStore();
 const waktu = ref(1);
 const timerStore = useTimerStore();
-const durasi_tunggu = ref(30); //1menit
+const durasi_tunggu = ref(10); //1menit
 const loading = ref(true);
 const interval_reset_timer = ref(durasi_tunggu.value);
 
@@ -51,11 +52,39 @@ const ujianStudi = computed(() => ujianstudiPagesStore.siswa_ujianstudi)
 const AlertFailed = defineAsyncComponent(() =>
     import('@/components/alert/AlertFailed.vue')
 )
-const data = ref(ujianstudiPagesStore.get_siswa_ujianstudi || [])
+// const data = ref(ujianstudiPagesStore.get_siswa_ujianstudi || [])
+const data = ref([])
 const getData = async () => {
-    data.value = ujianstudiPagesStore.get_siswa_ujianstudi || [];
+    // data.value = ujianstudiPagesStore.get_siswa_ujianstudi || [];
+    const res = await v3_get_AspekdetailTersedia();
+    if (res) {
+        data.value = res;
+        console.log(res);
+    }
     loading.value = false
 }
+
+// get semua asepek
+const v3_get_AspekdetailTersedia = async () => {
+    try {
+        const response = await ApiNode.get(
+            `studiv3/siswa/ujianstudi/vless/get_aspekdetail_tersedia`
+        );
+        console.log(response.hasOwnProperty("data"));
+        if (response.hasOwnProperty("data")) {
+            console.log(response);
+            return response.data;
+        } else {
+            return null;
+        }
+    } catch (error) {
+        Toast.danger("Error", `Gagal menghubungkan ke Server!`);
+        console.error(error);
+        return false;
+    }
+};
+
+
 const doMulai = (aspek_detail_id, index) => {
     router.push({ name: "studi-paket-detail", params: { aspek_detail_id, index } })
 }
@@ -100,7 +129,8 @@ const refreshDataUjian = async (w = waktu.value) => {
             // console.log('====================================');
             try {
                 const res = await API.getAspekDetail();
-                data.value = ujianstudiPagesStore.get_siswa_ujianstudi || [];
+                // data.value = ujianstudiPagesStore.get_siswa_ujianstudi || [];
+                await getData();
                 interval_reset_timer.value = durasi_tunggu.value
                 do_jalankan_timer_reset(0)
                 // await do_jalankan_timer_reset(durasi_tunggu.value);
@@ -118,12 +148,12 @@ const refreshDataUjian = async (w = waktu.value) => {
         }
     };
 }
-const fn_waktu_default = () => {
+const fn_waktu_default = async () => {
     getData();
     waktu.value = 0;
 }
 // timerStore.do_run_reset_timer()
-setTimeout(fn_waktu_default, 3000, false);
+setTimeout(fn_waktu_default, 2000, false);
 </script>
 <template>
     <div v-if="loading">
@@ -207,7 +237,7 @@ setTimeout(fn_waktu_default, 3000, false);
 
                             </td>
                             <td>{{ item.waktu }} menit</td>
-                            <td>{{ item.soal.length }} soal</td>
+                            <td>{{ item.soal_jml }} soal</td>
                             <!-- <td>UJIAN STUDI</td> -->
                         </tr>
                     </tbody>
