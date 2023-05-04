@@ -2,6 +2,6 @@ version: "3.8"
 services:
     viteapp:
       build: .
-      container_name: fe-ujiansudi
+      container_name: fe-ujiansudi-vless
       ports:
         - '${APP_PORT}:${APP_PORT}'
