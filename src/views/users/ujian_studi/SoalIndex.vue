@@ -88,12 +88,12 @@ setTimeout(fn_delay_response, 2000, 'argumen example');
 
 const fn_check_index_mapel_aktif = (id) => {
     // get semua mapel
-    for (const [index_mapel, mapel] of getSemuaMapel.value.entries()) {
-        if (mapel.id === id) {
-            return index_mapel;
-        }
-    }
-    return null;
+    // for (const [index_mapel, mapel] of getSemuaMapel.value.entries()) {
+    //     if (mapel.id === id) {
+    //         return index_mapel;
+    //     }
+    // }
+    // return null;
     // periksa yang id nya sama kemudian return index
 }
 const doStoreData = async (kode_jawaban) => {

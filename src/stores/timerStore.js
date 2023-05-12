@@ -37,8 +37,8 @@ export const useTimerStore = defineStore("timerStore", () => {
 
   const doClearInterval = () => {
     clearInterval(interval.value);
-    waktu.value = 0
-  }
+    waktu.value = 0;
+  };
   const doJalankanTimer = (total) => {
     clearInterval(interval.value);
     interval.value = setInterval(() => {
@@ -59,7 +59,11 @@ export const useTimerStore = defineStore("timerStore", () => {
     }, 1000);
   };
 
-  const doJalankanTimerV2_tgl_selesai = (tgl_selesai, aspek_detail_id, index) => {
+  const doJalankanTimerV2_tgl_selesai = (
+    tgl_selesai,
+    aspek_detail_id,
+    index
+  ) => {
     let dataProses = ujianstudiPagesStore.get_siswa_ujianstudi;
     if (dataProses[index].tgl_selesai == null) {
       // console.log('====================================');
@@ -68,18 +72,18 @@ export const useTimerStore = defineStore("timerStore", () => {
       let selesai = moment(tgl_selesai);
       let now = moment();
       let duration = moment.duration(selesai.diff(now));
-      let detik = parseInt(duration.asSeconds().toFixed(0))
-      let menit = parseFloat(duration.asMinutes().toFixed(2))
+      let detik = parseInt(duration.asSeconds().toFixed(0));
+      let menit = parseFloat(duration.asMinutes().toFixed(2));
 
       // !  save tgl_mulai dan tgl_selesai kedata mapel
       dataProses[index].tgl_mulai = now;
       dataProses[index].tgl_selesai = tgl_selesai;
-      ujianstudiPagesStore.set_siswa_ujianstudi(dataProses)
+      ujianstudiPagesStore.set_siswa_ujianstudi(dataProses);
 
       // ! jaalankan timer
 
       let total = detik;
-      doJalankanTimer(total)
+      doJalankanTimer(total);
       // clearInterval(interval.value);
       // interval.value = setInterval(() => {
       //   if (total === 0) {
@@ -100,24 +104,21 @@ export const useTimerStore = defineStore("timerStore", () => {
   };
 
   const doPeriksaUjianAktif = async () => {
-    let dataProses = ujianstudiPagesStore.get_siswa_ujianstudi;
-    for (const [index, item] of dataProses.entries()) {
-      let get_sisa_waktu = null
-      if (item.tgl_selesai) {
-        get_sisa_waktu = await fn_get_sisa_waktu(item.tgl_selesai);
-        if (get_sisa_waktu.detik > 0) {
-          ujianstudiPagesStore.set_siswa_ujianstudi_aktif(item)
-
-          // console.log('====================================');
-          // console.log(get_sisa_waktu);
-          // console.log('====================================');
-          doJalankanTimer(get_sisa_waktu.detik)
-        }
-      }
-    }
-  }
-
-
+    // let dataProses = ujianstudiPagesStore.get_siswa_ujianstudi;
+    // for (const [index, item] of dataProses.entries()) {
+    //   let get_sisa_waktu = null
+    //   if (item.tgl_selesai) {
+    //     get_sisa_waktu = await fn_get_sisa_waktu(item.tgl_selesai);
+    //     if (get_sisa_waktu.detik > 0) {
+    //       ujianstudiPagesStore.set_siswa_ujianstudi_aktif(item)
+    //       // console.log('====================================');
+    //       // console.log(get_sisa_waktu);
+    //       // console.log('====================================');
+    //       doJalankanTimer(get_sisa_waktu.detik)
+    //     }
+    //   }
+    // }
+  };
 
   const fn_get_sisa_waktu = async (tgl_selesai) => {
     try {
@@ -125,15 +126,15 @@ export const useTimerStore = defineStore("timerStore", () => {
         detik: 0,
         menit: 0,
         now: null,
-        selesai: null
+        selesai: null,
       };
       let selesai = moment(tgl_selesai);
       let now = moment();
       let duration = moment.duration(selesai.diff(now));
-      result.detik = parseInt(duration.asSeconds().toFixed(0))
-      result.menit = parseFloat(duration.asMinutes().toFixed(2))
-      result.now = now
-      result.selesai = selesai
+      result.detik = parseInt(duration.asSeconds().toFixed(0));
+      result.menit = parseFloat(duration.asMinutes().toFixed(2));
+      result.now = now;
+      result.selesai = selesai;
       // result = parseInt(Date.parse(tgl_selesai)) - parseInt(Date.parse(moment().format("YYYY-MM-DD H:i:s")));
       // console.log(result);
       // const response = await Siswa.findOne({ where: { id }, include: kelas });
@@ -141,19 +142,22 @@ export const useTimerStore = defineStore("timerStore", () => {
     } catch (error) {
       console.log(error.message);
     }
-  }
+  };
 
-  const defaultButtonSaveTimer = ref(3)
+  const defaultButtonSaveTimer = ref(3);
 
-  const buttonSaveLoading = ref(3) //! global state disble button , if >0 button save disable 
-  const get_buttonSaveLoading = computed(() => buttonSaveLoading.value)
-  const intervalButtonSave = ref(0)
-  const do_run_disabled_button_save = (waktu = defaultButtonSaveTimer.value) => { //! run on first load pages or after button clicked
+  const buttonSaveLoading = ref(3); //! global state disble button , if >0 button save disable
+  const get_buttonSaveLoading = computed(() => buttonSaveLoading.value);
+  const intervalButtonSave = ref(0);
+  const do_run_disabled_button_save = (
+    waktu = defaultButtonSaveTimer.value
+  ) => {
+    //! run on first load pages or after button clicked
     clearInterval(intervalButtonSave.value);
     // console.log("store: run buton disable");
     let total = waktu;
-    do_jalankan_timer_save(total)
-  }
+    do_jalankan_timer_save(total);
+  };
 
   const do_jalankan_timer_save = (total) => {
     buttonSaveLoading.value = 3;
@@ -223,6 +227,5 @@ export const useTimerStore = defineStore("timerStore", () => {
     // get_interval_reset_timer,
     // set_reset_timer_batas,
     // do_run_reset_timer, do_jalankan_timer_reset
-
   };
 });

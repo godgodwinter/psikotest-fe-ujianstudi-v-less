@@ -105,7 +105,7 @@ const fn_check_index_mapel_aktif = (id) => {
 }
 const doSelesai = async () => {
     let getMapelAktif = ujianstudiPagesStore.get_siswa_ujianstudi_aktif;
-    let aspekdetail_index = fn_check_index_mapel_aktif(getMapelAktif.id);
+    // let aspekdetail_index = fn_check_index_mapel_aktif(getMapelAktif.id);
     if (confirm("Apakah anda yakin mengkhiri mapel ini?")) {
         // 1. stop interval timer 
         timerStore.doClearInterval();
@@ -114,33 +114,34 @@ const doSelesai = async () => {
         // 3. set mapel aktif = null
         // 4.  set soal aktif=null
         // 5. redirect to paket
-        let dataMapel = ujianstudiPagesStore.get_siswa_ujianstudi;
+        // let dataMapel = ujianstudiPagesStore.get_siswa_ujianstudi;
         let dataMapel_aktif = ujianstudiPagesStore.get_siswa_ujianstudi_aktif;
-        for (const [index_mapel, item_mapel] of dataMapel.entries()) {
-            // console.log('====================================');
-            // console.log(item_mapel, dataMapel_aktif);
-            // console.log('====================================');
-            if (item_mapel.id === dataMapel_aktif.id) {
-                // console.log('====================================');
-                // console.log(item_mapel.tgl_selesai, item_mapel, moment());
-                // console.log('====================================');
-                item_mapel.tgl_selesai = moment().format();
-            }
-        }
+        // for (const [index_mapel, item_mapel] of dataMapel.entries()) {
+        //     // console.log('====================================');
+        //     // console.log(item_mapel, dataMapel_aktif);
+        //     // console.log('====================================');
+        //     if (item_mapel.id === dataMapel_aktif.id) {
+        //         // console.log('====================================');
+        //         // console.log(item_mapel.tgl_selesai, item_mapel, moment());
+        //         // console.log('====================================');
+        //         item_mapel.tgl_selesai = moment().format();
+        //     }
+        // }
         // console.log('====================================');
         // console.log(dataMapel);
         // console.log('====================================');
-        ujianstudiPagesStore.set_siswa_ujianstudi(dataMapel)
+        // ujianstudiPagesStore.set_siswa_ujianstudi(dataMapel)
         ujianstudiPagesStore.set_siswa_ujianstudi_soal_aktif(null)
         ujianstudiPagesStore.set_siswa_ujianstudi_aktif(null)
-        console.log('====================================');
-        console.log(aspekdetail_index);
-        console.log('====================================');
+        // console.log('====================================');
+        // console.log(aspekdetail_index);
+        // console.log('====================================');
         try {
-            let dataFormSend = {
-                aspekdetail_index
-            }
-            const response = await ApiNode.post(`studiv3/siswa/ujianstudi/vless/paketsoal/${dataMapel_aktif.id}/do_finish`, dataFormSend);
+            // let dataFormSend = {
+            //     aspekdetail_index
+            // }
+            const response = await ApiNode.post(`studiv3/siswa/ujianstudi/vless/paketsoal/${dataMapel_aktif.id}/do_finish`);
+            // const response = await ApiNode.post(`studiv3/siswa/ujianstudi/vless/paketsoal/${dataMapel_aktif.id}/do_finish`, dataFormSend);
             // console.log(response);
             // Toast.success("Info", "Berhasil memulai !");
             // onKlik(tgl_selesai, aspek_detail_id.value, index.value)

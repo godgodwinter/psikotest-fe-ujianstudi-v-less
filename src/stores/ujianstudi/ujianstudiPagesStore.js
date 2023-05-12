@@ -72,17 +72,17 @@ export const useUjianstudiPagesStore = defineStore(
         if (is_updated) {
           // ! 1. update mapel_aktif    //siswa_ujianstudi_aktif
           // ! 2. update   localstroage //siswa_ujianstudi
-          for (const [
-            index_mapel,
-            item_mapel,
-          ] of siswa_ujianstudi.value.entries()) {
-            if (item_mapel.id === siswa_ujianstudi_aktif.value.id) {
-              // siswa_ujianstudi_aktif.value.soal[index] = item
-              siswa_ujianstudi.value[index_mapel] =
-                siswa_ujianstudi_aktif.value;
-              // console.log(siswa_ujianstudi_aktif.value);
-            }
-          }
+          // for (const [
+          //   index_mapel,
+          //   item_mapel,
+          // ] of siswa_ujianstudi.value.entries()) {
+          //   if (item_mapel.id === siswa_ujianstudi_aktif.value.id) {
+          //     // siswa_ujianstudi_aktif.value.soal[index] = item
+          //     siswa_ujianstudi.value[index_mapel] =
+          //       siswa_ujianstudi_aktif.value;
+          //     // console.log(siswa_ujianstudi_aktif.value);
+          //   }
+          // }
           set_siswa_ujianstudi(siswa_ujianstudi.value);
           //     //! set_siswa_ujianstudi(siswa_ujianstudi.value)
         }
