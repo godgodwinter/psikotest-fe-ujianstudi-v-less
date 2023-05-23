@@ -1,6 +1,7 @@
 version: "3.8"
 services:
     viteapp:
+      restart: on-failure
       build: .
       container_name: fe-ujiansudi-vless
       ports:
